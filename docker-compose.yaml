@@ -1,0 +1,47 @@
+version: '3'
+services:
+  mongo1:
+    hostname: mongo1
+    container_name: mongo1
+    networks: 
+      - cluster
+    image:  mongo:latest
+    restart: always
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    command: 'mongod --quiet --bind_ip_all --replSet rs0'
+    volumes:
+      - /data/db/mongo:/data/db
+
+  mongo2:
+    hostname: mongo2
+    container_name: mongo2
+    networks: 
+      - cluster
+    image:  mongo:latest
+    restart: always
+    expose:
+      - 27017
+    ports:
+      - 27018:27017
+    command: 'mongod --quiet --bind_ip_all --replSet rs0'
+
+  mongo3:
+    networks: 
+      - cluster
+    hostname: mongo3
+    container_name: mongo3
+    image: mongo:latest
+    restart: always
+    expose:
+      - 27017
+    ports:
+      - 27019:27017
+    command: 'mongod --quiet --bind_ip_all --replSet rs0'
+
+networks: 
+  cluster:
+    driver: bridge
+    
